@@ -1,0 +1,85 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" 
+    "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml"
+    xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+    xmlns:h="http://xmlns.jcp.org/jsf/html"
+    xmlns:f="http://xmlns.jcp.org/jsf/core"
+    xmlns:c="http://xmlns.jcp.org/jsp/jstl/core"
+    xmlns:p="http://primefaces.org/ui"   
+    xmlns:fn="http://java.sun.com/jsp/jstl/functions"
+    xmlns:composite="http://xmlns.jcp.org/jsf/composite"
+    xmlns:bugreportapp="http://java.sun.com/jsf/composite/bugreportapp/compositecomponents"
+    >
+    
+  <!--
+        COMMENTED OUT NAMESPACES:
+             xmlns:fn="http://java.sun.com/jsp/jstl/functions" 
+   -->  
+
+<!-- Refers to the application.properties file  -->
+<f:loadBundle basename="application" var="msg" />
+<f:view transient="true" />
+
+<!-- NOTE: h-head is needed for primefaces input text components. -->   
+<h:head>
+    <title><h:outputText value="#{msg.welcomeTitle}" /></title>
+</h:head>
+<h:body>
+    <h3>
+        <h:outputText value="#{msg.welcomeHeading}" />
+    </h3>
+    <p>
+        <h:outputText value="#{msg.welcomeMessage}" />
+    </p>
+
+    <p>
+        <h:outputText value="Start and stop timer " />
+    </p>
+
+    <h:outputText value="Form 1: no onKeypress prevent default" />
+    <script type='text/javascript'>
+        //<![CDATA[
+        function formKeyPressed(event){
+            console.log('formKeyPressed: ' + event);
+            return true;
+        }
+    
+
+        //]]>
+   </script>  
+    <h:form id="bugForm" onkeypress="formKeyPressed(event); ">
+        
+           <!-- Dummy Dialog -->
+          <p:dialog appendTo="@(body)" id="messageDialog" modal="true" header="Message" widgetVar="dummyDialogPopup" style="min-width:300px">
+            <div class="ui-panel ui-widget ui-widget-content ui-corner-all custom-panel-type-2">
+                <div class="ui-panel-content ui-widget-content" style="min-height: 50px; max-width: 500px">
+                    <h:outputText id="messageContent" value="Message" />                
+                </div>
+            </div>
+            <h:panelGrid style="width:100%;padding-top:10px;" columnClasses="alignRight">
+                <h:panelGroup>
+                   <button type="button" value="dummyButton"></button>
+                </h:panelGroup>
+            </h:panelGrid>
+        </p:dialog>
+        
+        <!-- Try to render some javascript out  -->
+        <h:outputScript id="dummyScriptWeWantToKickToTheHead" target="body" >
+              //<![CDATA[        
+        var visHolder;
+        function initialize() {
+            var config = {
+                messageDialog : #{p:widgetVar('bugForm:messageDialog')},                
+            };
+            return config;                     
+        }
+        //]]>        
+        </h:outputScript>   
+        
+        <p:commandButton action="#{timerController.openDialog}" value="OpenDialog" partialSubmit="true" />         
+        <p:commandButton action="#{timerController.closeDialog}" value="CloseDialog"/>
+    </h:form>
+    
+</h:body>
+</html>

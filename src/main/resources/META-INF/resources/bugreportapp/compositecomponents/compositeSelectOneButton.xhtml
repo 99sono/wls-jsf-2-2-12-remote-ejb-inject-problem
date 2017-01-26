@@ -1,0 +1,35 @@
+<html xmlns="http://www.w3.org/1999/xhtml"
+    xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+    xmlns:h="http://xmlns.jcp.org/jsf/html"
+    xmlns:f="http://xmlns.jcp.org/jsf/core"
+    xmlns:c="http://xmlns.jcp.org/jsp/jstl/core"
+    xmlns:p="http://primefaces.org/ui"
+    xmlns:fn="http://java.sun.com/jsp/jstl/functions"
+    xmlns:func="http://wm6.swisslog.com/jsf/functions"
+    xmlns:composite="http://xmlns.jcp.org/jsf/composite">
+    
+    <!-- Deifne dummy tag attributes  -->
+    <composite:interface  shortDescription="Dummy composite component for bug report">               
+        <composite:attribute name="value" required="false" type="java.lang.String" shortDescription="Label of the component." />       
+    </composite:interface>
+    
+    <!-- Define dummy component to render -->
+    <composite:implementation>
+        <span id="#{cc.clientId}">
+                <h:outputText value="Checking if replace function works: " />
+                <h:outputText value="&lt;br/&gt;" escape="false" />
+                
+                <!-- This only works if the parent page index.xhtml is also including the fn declaration -->                
+                <h:outputText value="#{fn:replace(cc.clientId, ':','_')}" />
+                <h:outputText value="&lt;br/&gt;" escape="false" />
+                
+                <p:selectOneButton id="button"
+                    widgetVar="#{fn:replace(cc.clientId, ':','_')}_NameOfWidet"     
+                    value="#{cc.attrs.value}">             
+                	<f:selectItem itemLabel="Xbox One" itemValue="Xbox One" />
+                    <f:selectItem itemLabel="PS4" itemValue="PS4" />
+                    <f:selectItem itemLabel="Wii U" itemValue="Wii U" />             
+                </p:selectOneButton>                     
+            </span>
+    </composite:implementation>
+</html>
